@@ -139,3 +139,9 @@ bin/kafka-server-stop.sh config/server.properties
 进入下载界面，解压至对应路径
 sudo tar -zxvf spark-2.4.4-bin-hadoop2.7.tgz -C /usr/local
 sudo mv ./spark-2.4.4-bin-hadoop2.7 ./spark
+sudo chown -R mengfz:mengfz ./spark
+进入conf目录
+cp ./spark-env.sh.template ./spark-env.sh
+随后编辑之 ： sudo gedit spark-env.sh
+加入
+export SPARK_DIST_CLASSPATH=$(/usr/local/hadoop/bin/hadoop classpath)
