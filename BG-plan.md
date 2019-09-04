@@ -37,7 +37,7 @@ sudo mkdir local2
 sudo tar -zxvf apache-flume-1.9.0-bin.tar.gz -C /usr/local2
 随后从主界面  cd /usr/local2
 sudo mv ./apache-flume-1.9.0-bin ./flume
-sudo chown -R {你的用户名} ./flume
+sudo chown -R {你的用户名}:{你的用户名} ./flume
 ③配置环境变量
 sudo gedit ~/.bashrc
 文档最后加入
@@ -51,3 +51,76 @@ source ~/.bashrc
 sudo cp ./flume-env.sh.template ./flume-env.sh
 sudo gedit ./flume-env.sh
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+
+三-前奏：zookeeper kafka前置组件
+https://blog.csdn.net/wsk1103/article/details/80399115
+首先官网下载最新版，进入下载目录解压
+sudo tar -zxvf apache-zookeeper-3.5.5-bin.tar.gz -C /usr/local/services
+便于后续识别所以改名
+sudo mv ./apache-zookeeper-3.5.5-bin ./zookeeper-3.5.5
+进入其中的conf目录 : sudo cp ./zoo_sample.cfg ./zoo.cfg
+编辑基本信息 : sudo gedit ./zoo.cfg
+
+# The number of milliseconds of each tick
+# 心跳间隔，毫秒
+tickTime=2000
+# The number of ticks that the initial
+# synchronization phase can take
+# 配置zookeeper接受客户端初始化连接时最长能忍受多少个时间心跳间隔。
+initLimit=10
+# The number of ticks that can pass between
+# sending a request and getting an acknowledgement
+# 这个配置项标识 Leader 与 Follower 之间发送消息，请求和应答时间长度，最长不能超过多少个 tickTime 的时间长度。
+syncLimit=5
+# the directory where the snapshot is stored.
+# do not use /tmp for storage, /tmp here is just
+# example sakes.
+# 数据存放的位置
+dataDir=/home/mengfz/sofrware/zookeeper/zookeeperData
+#日志存放的位置
+dataLogDir=/home/mengfz/sofrware/zookeeper/zookeeperLog
+# the port at which the clients will connect
+# 服务器客户端的接口
+clientPort=2181
+# the maximum number of client connections.
+# increase this if you need to handle more clients
+#maxClientCnxns=60
+#
+# Be sure to read the maintenance section of the
+# administrator guide before turning on autopurge.
+#
+# http://zookeeper.apache.org/doc/current/zookeeperAdmin.html#sc_maintenance
+#
+# The number of snapshots to retain in dataDir
+#autopurge.snapRetainCount=3
+# Purge task interval in hours
+# Set to "0" to disable auto purge feature
+#autopurge.purgeInterval=1
+
+# 2888,3888 are election port
+# 2888端口是zookeeper服务之间的通讯的端口，3888是zookeeper与其他应用程序通讯的端口。
+server.1=localhost:2888:3888
+
+
+后续验证操作：
+①根据dataDir和dataLogDir路径，在主目录下创建对应的文件夹
+dataDir=/home/mengfz/sofrware/zookeeper/zookeeperData
+dataLogDir=/home/mengfz/sofrware/zookeeper/zookeeperLog
+并且在主目录下cd /sofrware/zookeeper/zookeeperData
+创建文件 touch myid    其中内容为 1
+②启动zookeeper服务器，进入zookeeper/bin目录，执行 sudo ./zkServer.sh start 启动服务器
+③检验服务器命令， sudo ./zkCli.sh -server localhost:2181 控制台输出没有报错便是已经启动成功
+④停止服务器命令 sudo ./zkServer.sh stop
+至此zookeeper已经全部安装完毕
+
+三：KAFKA安装
+https://blog.csdn.net/weixin_40782143/article/details/87901289
+①进入下载地址下载
+sudo tar -zxvf kafka_2.12-2.3.0.tgz -C /opt
+②进入opt目录
+sudo mv ./kafka_2.12-2.3.0 ./kafka
+sudo chown -R {你的用户名}:{你的用户名} /opt/kafka
+#sudo chown -R mengfz:mengfz /opt/kafka
+③启动服务器
+bin/kafka-server-start.sh config/server.properties
