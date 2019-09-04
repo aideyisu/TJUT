@@ -124,3 +124,6 @@ sudo chown -R {你的用户名}:{你的用户名} /opt/kafka
 #sudo chown -R mengfz:mengfz /opt/kafka
 ③启动服务器
 bin/kafka-server-start.sh config/server.properties
+看到响应后即可停止服务器
+④停止服务器
+bin/kafka-server-stop.sh config/server.properties
