@@ -102,7 +102,6 @@ clientPort=2181
 # 2888端口是zookeeper服务之间的通讯的端口，3888是zookeeper与其他应用程序通讯的端口。
 server.1=localhost:2888:3888
 
-
 后续验证操作：
 ①根据dataDir和dataLogDir路径，在主目录下创建对应的文件夹
 dataDir=/home/mengfz/sofrware/zookeeper/zookeeperData
@@ -127,3 +126,16 @@ bin/kafka-server-start.sh config/server.properties
 看到响应后即可停止服务器
 ④停止服务器
 bin/kafka-server-stop.sh config/server.properties
+
+
+四-前奏：spark前置scala安装
+一句话 ： sudo apt-get install scala
+安装后使用shell scala -version检查版本问题
+即可完成安装
+
+四：spark
+
+首先前往官网下载最新安装包
+进入下载界面，解压至对应路径
+sudo tar -zxvf spark-2.4.4-bin-hadoop2.7.tgz -C /usr/local
+sudo mv ./spark-2.4.4-bin-hadoop2.7 ./spark
