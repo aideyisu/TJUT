@@ -52,6 +52,17 @@ sudo cp ./flume-env.sh.template ./flume-env.sh
 sudo gedit ./flume-env.sh
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
+检验flume安装情况
+①检查版本
+cd/uar/local2/flume/bin
+./flume-ng version     
+注 初次可选启动命令
+bin/flume-ng agent -n $agent_name -c conf -f conf/flume-conf.properties.template
+
+报错DEBUG
+No appenders could be found for logger (org.apache.flume.util.SSLUtil). [原因：-c 未找到路径]
+https://blog.csdn.net/u012373815/article/details/54024940
+
 
 三-前奏：zookeeper kafka前置组件
 https://blog.csdn.net/wsk1103/article/details/80399115
@@ -133,15 +144,56 @@ bin/kafka-server-stop.sh config/server.properties
 安装后使用shell scala -version检查版本问题
 即可完成安装
 
-四：spark
-
-首先前往官网下载最新安装包
-进入下载界面，解压至对应路径
+四：SPARK
+http://dblab.xmu.edu.cn/blog/2081-2/
+①首先前往官网下载最新安装包
+https://spark.apache.org/downloads.html
+②进入下载界面，解压至对应路径
 sudo tar -zxvf spark-2.4.4-bin-hadoop2.7.tgz -C /usr/local
+进入/usr/local路径，改名并赋予权限
 sudo mv ./spark-2.4.4-bin-hadoop2.7 ./spark
 sudo chown -R mengfz:mengfz ./spark
-进入conf目录
+③进入conf目录，生成配置文件
 cp ./spark-env.sh.template ./spark-env.sh
-随后编辑之 ： sudo gedit spark-env.sh
-加入
+随后打开并编辑之 ： sudo gedit spark-env.sh
+在最后加入
 export SPARK_DIST_CLASSPATH=$(/usr/local/hadoop/bin/hadoop classpath)
+
+spark后续验证操作：
+cd /usr/local/spark
+./bin/run-example SparkPi 2>&1 | grep "Pi is"
+最终会输出π的近似值
+即可完成安装
+
+五：REDIS
+https://blog.csdn.net/qq_41822647/article/details/84594200
+在ubuntu18.04系统下可直接通过命令安装
+①前期准备  更新软件列表和软件 (第二个指令比较慢)
+sudo apt-get update
+sudo apt-get upgrade
+②安装REDIS
+sudo apt-get install redis-server
+并检查版本
+redis-server -v
+③测试REDIS 启动服务，启动客户端
+redis-server
+REDIS-cli
+
+六：mongoDB   官网直安，方便快捷
+https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/
+①导入包管理系统使用的公钥
+wget -qO  -  https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add  -
+②为MongoDB创建一个列表文件
+echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu bionic/mongodb-org/4.2 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.2.list
+③重新加载本地包数据库
+sudo apt-get update
+④安装MongoDB包
+sudo apt-get install -y mongodb-org
+
+后续验证操作：
+①启动MongoDB
+sudo service mongod start
+②通过检查日志文件的内容验证进程是否成功启动
+sudo gedit /var/log/mongodb/mongod.log
+而后搜索 27017，可以很快捷的找到
+[initandlisten] waiting for connections on port 27017
