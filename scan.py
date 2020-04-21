@@ -7,6 +7,7 @@
 @CreateTime: 2017/12/1 1:31
 """
 
+import os
 import sys
 import time
 import socket
@@ -23,6 +24,7 @@ class Pinger(object):
     """ Pings to a host -- the Pythonic way"""
 
     def __init__(self, target_host, count=DEFAULT_COUNT, timeout=DEFAULT_TIMEOUT):
+        """ 初始化 """
         self.target_host = target_host
         self.count = count
         self.timeout = timeout
@@ -279,7 +281,6 @@ if __name__ == '__main__':
     # test
     # print portscan('8.8.8.8', range(1, 100), True, True, True)
     # exit()
-
     parser = argparse.ArgumentParser(description='scan.py - Replicates limited nmap functionality and ping in python')
     parser.add_argument('-v', '--verbose', action='store_true', help='Enable this for full output')
     parser.add_argument('-sS', '--tcpscan', action='store_true', help='Enable this for TCP scans')
@@ -301,8 +302,7 @@ if __name__ == '__main__':
     if args.host:
         pinger = Pinger(target_host=args.host)
         pinger.ping()
-
-    if args.targets:
+    elif args.targets:
         if '/' in args.targets:  # found cidr target
             targets = returnCIDR(args.targets)
         elif '-' in args.targets:
