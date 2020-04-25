@@ -7,6 +7,8 @@
 @CreateTime: 2017/12/1 1:31
 """
 
+# 相关技术博客：https: // xiaix.me/duan-kou-sao-miao-yuan-li-ji-shi-xian/
+
 import os
 import sys
 import time
@@ -298,7 +300,6 @@ if __name__ == '__main__':
 
     # Set target (and convert for FQDN)
     targets = []
-
     if args.host:
         pinger = Pinger(target_host=args.host)
         pinger.ping()
