@@ -7,8 +7,7 @@ dst_ip = "8.8.8.8"
 src_port = RandShort()
 dst_port = 80
 
-tcp_syn_scan = sr1(IP(dst=dst_ip)/TCP(sport=src_port,
-                                      dport=dst_port, flags='S'), timeout=10)
+tcp_syn_scan = sr1(IP(dst=dst_ip)/TCP(sport=src_port,dport=dst_port, flags='S'), timeout=10)
 
 # 判断是否收到应答包
 if type(tcp_syn_scan) == type(None):

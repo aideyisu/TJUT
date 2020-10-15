@@ -1,14 +1,5 @@
 # encoding: utf-8
 
-"""
-@Author: Mr. Li
-@Software: PyCharm
-@FileName: nmap.py
-@CreateTime: 2017/12/1 1:31
-"""
-
-# 相关技术博客：https: // xiaix.me/duan-kou-sao-miao-yuan-li-ji-shi-xian/
-
 import os
 import sys
 import time
